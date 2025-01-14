@@ -22,7 +22,7 @@ app.use(
     cors({
       origin: [
         "http://localhost:5173", // Localhost development
-        "https://ppsk4j18-5173.inc1.devtunnels.ms", // Devtunnel URL
+        "https://project-partners-khkm.vercel.app", // Devtunnel URL
       ],
       credentials: true, // Required for withCredentials to work
     })
