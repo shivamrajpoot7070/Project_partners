@@ -31,7 +31,7 @@ app.use(
 const PORT=process.env.PORT || 3000;
 
 // api
-
+app.get("/", (req, res) => res.send("Express on Vercel"));
 app.use("/api/v1/user", UserRoute);
 app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", jobRoute);
