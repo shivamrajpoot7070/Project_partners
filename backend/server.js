@@ -37,7 +37,7 @@ app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
 
-
+// ndkj
 app.listen(PORT,()=>{
     
     console.log(`Server is running on port ${PORT}`);
