@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Navbar from "../shared/Navbar";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -9,9 +9,9 @@ import { USER_END_POINT } from "@/utils/constant";
 import axios from "axios";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading,setUser } from "@/redux/authSlice";
-import store from "@/redux/store";
+import { setLoading, setUser } from "@/redux/authSlice";
 import { Loader2 } from "lucide-react";
+
 const Login = () => {
   const [input, setInput] = useState({
     email: "",
@@ -19,43 +19,46 @@ const Login = () => {
     role: "",
   });
 
-  const navigate=useNavigate();
-  const dispatch=useDispatch();
-   const {loading}=useSelector(store=>store.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading } = useSelector((store) => store.auth);
 
-  const submitHandler=async(e)=> {
+  const submitHandler = async (e) => {
     e.preventDefault();
     console.log(input);
 
-    try{
-      
+    try {
       dispatch(setLoading(true));
-      const res=await axios.post(`${USER_END_POINT}/login`,input,{
-        headers:{
+      const res = await axios.post(`${USER_END_POINT}/login`, input, {
+        headers: {
           "Content-Type": "application/json",
-          },
-          withCredentials:true,
+        },
+        withCredentials: true, // Allows cookies to be sent/received
       });
 
-      if(res.data.success){
-        dispatch(setUser(res.data.user));  // login hone par backend se user return hua usi ko le liye or store bhej diye
-        navigate("/");
-        toast.success(res.data.message);
-      }
-    }
+      if (res.data.success) {
+        const { user, token, message } = res.data;
 
-    catch(e){
-      console.log(e);
-      toast.error(e.response.data.message);
-    }
-    finally{
+        // Save the token to localStorage for future use
+        localStorage.setItem("token", token);
+
+        // Save user details in Redux store
+        dispatch(setUser(user));
+
+        navigate("/"); // Navigate to home page
+        toast.success(message);
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error(e.response?.data?.message || "Something went wrong!");
+    } finally {
       dispatch(setLoading(false));
     }
-  }
+  };
 
-  function changeEventHandler(e) {
+  const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
-  }
+  };
 
   return (
     <div>
@@ -115,8 +118,7 @@ const Login = () => {
           </div>
           {loading ? (
             <Button className="w-full my-4">
-              {" "}
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait{" "}
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
             </Button>
           ) : (
             <Button type="submit" className="w-full my-4">

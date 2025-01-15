@@ -62,33 +62,38 @@ export const login = async (req, res) => {
                 success: false
             });
         };
+
         let user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({
                 message: "Incorrect email or password.",
                 success: false,
-            })
+            });
         }
+
         const isPasswordMatch = await bcrypt.compare(password, user.password);
         if (!isPasswordMatch) {
             return res.status(400).json({
                 message: "Incorrect email or password.",
                 success: false,
-            })
+            });
         };
-        // check role is correct or not
+
+        // Check if role matches
         if (role !== user.role) {
             return res.status(400).json({
                 message: "Account doesn't exist with current role.",
                 success: false
-            })
+            });
         };
 
+        // Create token
         const tokenData = {
             userId: user._id
-        }
-        const token = await jwt.sign(tokenData, process.env.SECRET_KEY, { expiresIn: '1d' });
+        };
+        const token = jwt.sign(tokenData, process.env.SECRET_KEY, { expiresIn: '1d' });
 
+        // Prepare user object
         user = {
             _id: user._id,
             fullname: user.fullname,
@@ -96,17 +101,31 @@ export const login = async (req, res) => {
             phoneNumber: user.phoneNumber,
             role: user.role,
             profile: user.profile
-        }
+        };
 
-        return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpsOnly: true, sameSite: 'strict' }).json({
-            message: `Welcome back ${user.fullname}`,
-            user,
-            success: true
-        })
+        // Set cookie and return response with token
+        return res
+            .status(200)
+            .cookie("token", token, {
+                maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+                httpOnly: true, // Prevent JavaScript access
+                sameSite: 'strict' // Prevent CSRF attacks
+            })
+            .json({
+                message: `Welcome back ${user.fullname}`,
+                user,
+                token, // Include the bearer token in the response
+                success: true
+            });
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "Internal server error.",
+            success: false
+        });
     }
-}
+};
+
 export const logout = async (req, res) => {
     try {
         return res.status(200).cookie("token", "", { maxAge: 0 }).json({

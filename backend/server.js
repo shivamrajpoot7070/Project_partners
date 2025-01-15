@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use(
     cors({
       origin: [
-        "http://localhost:5173", // Localhost development
+        "http://localhost:3000", // Localhost development
         "https://project-partners-khkm.vercel.app", // Devtunnel URL
       ],
       credentials: true, // Required for withCredentials to work
