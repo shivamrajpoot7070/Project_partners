@@ -328,48 +328,47 @@ import { toast } from 'sonner'
 
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
-
     const [loading, setLoading] = useState(false);
-    const { user } = useSelector(store => store.auth);
+    const { user } = useSelector((store) => store.auth);
 
     const [input, setInput] = useState({
-        fullname: user?.fullname || "",
-        email: user?.email || "",
-        phoneNumber: user?.phoneNumber || "",
-        bio: user?.profile?.bio || "",
-        skills: user?.profile?.skills?.join(", ") || "", // Store skills as comma-separated string
-        file: user?.profile?.resume || ""  // Resume link (Google Drive URL)
+        fullname: user?.fullname || '',
+        email: user?.email || '',
+        phoneNumber: user?.phoneNumber || '',
+        bio: user?.profile?.bio || '',
+        skills: user?.profile?.skills?.join(', ') || '', // Comma-separated skills
+        file: user?.profile?.resume || '', // Google Drive link
     });
+
     const dispatch = useDispatch();
 
     const changeEventHandler = (e) => {
         const { name, value } = e.target;
-        if (name === "skills") {
-            setInput({ ...input, [name]: value });
-        } else {
-            setInput({ ...input, [name]: value });
-        }
-    }
+        setInput((prevState) => ({ ...prevState, [name]: value }));
+    };
 
     const submitHandler = async (e) => {
         e.preventDefault();
         setLoading(true);
 
-        const formData = new FormData();
-        formData.append("fullname", input.fullname);
-        formData.append("email", input.email);
-        formData.append("phoneNumber", input.phoneNumber);
-        formData.append("bio", input.bio);
-        formData.append("skills", input.skills);
-
-        if (input.file) {
-            formData.append("resumeLink", input.file); // Send Google Drive link
-        }
-
         try {
+            const token = localStorage.getItem('token'); // Get token from localStorage
+
+            const formData = new FormData();
+            formData.append('fullname', input.fullname);
+            formData.append('email', input.email);
+            formData.append('phoneNumber', input.phoneNumber);
+            formData.append('bio', input.bio);
+            formData.append('skills', input.skills);
+
+            if (input.file) {
+                formData.append('resumeLink', input.file); // Add resume link if provided
+            }
+
             const res = await axios.post(`${USER_END_POINT}/profile/update`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`, // Send token in the headers
                 },
                 withCredentials: true,
             });
@@ -378,27 +377,31 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                 dispatch(setUser(res.data.user));
                 toast.success(res.data.message);
             }
-
         } catch (err) {
-            toast.error(err.response?.data?.message || "Error updating profile");
+            toast.error(err.response?.data?.message || 'Error updating profile');
         } finally {
             setLoading(false);
             setOpen(false);
         }
-    }
+    };
 
     return (
         <Dialog open={open}>
-            <DialogContent className="sm:max-w-[425px]" onInteractOutside={() => setOpen(false)}>
+            <DialogContent
+                className="sm:max-w-[425px]"
+                onInteractOutside={() => setOpen(false)}
+            >
                 <DialogHeader>
                     <DialogTitle>Update Profile</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={submitHandler}>
-                    <div className='grid gap-4 py-4'>
-                        <div className='grid grid-cols-4 items-center gap-4'>
-                            <Label htmlFor="name" className="text-right">Name</Label>
+                    <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="fullname" className="text-right">
+                                Name
+                            </Label>
                             <Input
-                                id="name"
+                                id="fullname"
                                 name="fullname"
                                 type="text"
                                 value={input.fullname}
@@ -406,8 +409,10 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                 className="col-span-3"
                             />
                         </div>
-                        <div className='grid grid-cols-4 items-center gap-4'>
-                            <Label htmlFor="email" className="text-right">Email</Label>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="email" className="text-right">
+                                Email
+                            </Label>
                             <Input
                                 id="email"
                                 name="email"
@@ -417,39 +422,50 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                 className="col-span-3"
                             />
                         </div>
-                        <div className='grid grid-cols-4 items-center gap-4'>
-                            <Label htmlFor="number" className="text-right">Number</Label>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="phoneNumber" className="text-right">
+                                Number
+                            </Label>
                             <Input
-                                id="number"
+                                id="phoneNumber"
                                 name="phoneNumber"
+                                type="text"
                                 value={input.phoneNumber}
                                 onChange={changeEventHandler}
                                 className="col-span-3"
                             />
                         </div>
-                        <div className='grid grid-cols-4 items-center gap-4'>
-                            <Label htmlFor="bio" className="text-right">Bio</Label>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="bio" className="text-right">
+                                Bio
+                            </Label>
                             <Input
                                 id="bio"
                                 name="bio"
+                                type="text"
                                 value={input.bio}
                                 onChange={changeEventHandler}
                                 className="col-span-3"
                             />
                         </div>
-                        <div className='grid grid-cols-4 items-center gap-4'>
-                            <Label htmlFor="skills" className="text-right">Skills</Label>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="skills" className="text-right">
+                                Skills
+                            </Label>
                             <Input
                                 id="skills"
                                 name="skills"
+                                type="text"
                                 value={input.skills}
                                 onChange={changeEventHandler}
                                 className="col-span-3"
                                 placeholder="Comma-separated skills"
                             />
                         </div>
-                        <div className='grid grid-cols-4 items-center gap-4'>
-                            <Label htmlFor="file" className="text-right">Resume Link (Google Drive)</Label>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="file" className="text-right">
+                                Resume Link (Google Drive)
+                            </Label>
                             <Input
                                 id="file"
                                 name="file"
@@ -462,12 +478,21 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                         </div>
                     </div>
                     <DialogFooter>
-                        {loading ? <Button className="w-full my-4"> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait </Button> : <Button type="submit" className="w-full my-4">Update</Button>}
+                        {loading ? (
+                            <Button className="w-full my-4">
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Please wait
+                            </Button>
+                        ) : (
+                            <Button type="submit" className="w-full my-4">
+                                Update
+                            </Button>
+                        )}
                     </DialogFooter>
                 </form>
             </DialogContent>
         </Dialog>
-    )
-}
+    );
+};
 
 export default UpdateProfileDialog;
