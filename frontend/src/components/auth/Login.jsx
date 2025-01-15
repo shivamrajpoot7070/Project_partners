@@ -61,37 +61,37 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div className="bg-[#F7F8FA] min-h-screen">
       <Navbar />
-      <div className="flex items-center justify-center max-w-7xl mx-auto">
-        <form
-          onSubmit={submitHandler}
-          className="w-1/2 border border-gray-200 rounded-md p-4 my-10"
-        >
-          <h1 className="font-bold text-xl mb-5">Login</h1>
-          <div className="my-2">
+      <div className="w-full max-w-lg mx-auto bg-white rounded-lg shadow-lg p-8 my-10">
+        <h1 className="font-bold text-3xl text-center text-[#6A38C2] mb-8">Login to Your Account</h1>
+        <form onSubmit={submitHandler}>
+          <div className="my-4">
             <Label>Email</Label>
             <Input
               type="email"
               value={input.email}
               name="email"
               onChange={changeEventHandler}
-              placeholder="shivam@gmail.com"
+              placeholder="youremail@example.com"
+              className="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-[#6A38C2] transition duration-300"
             />
           </div>
 
-          <div className="my-2">
+          <div className="my-4">
             <Label>Password</Label>
             <Input
               type="password"
               value={input.password}
               name="password"
               onChange={changeEventHandler}
-              placeholder="shivam"
+              placeholder="********"
+              className="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-[#6A38C2] transition duration-300"
             />
           </div>
+
           <div className="flex items-center justify-between">
-            <RadioGroup className="flex items-center gap-4 my-5">
+            <RadioGroup className="flex items-center gap-6">
               <div className="flex items-center space-x-2">
                 <Input
                   type="radio"
@@ -116,21 +116,30 @@ const Login = () => {
               </div>
             </RadioGroup>
           </div>
-          {loading ? (
-            <Button className="w-full my-4">
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
-            </Button>
-          ) : (
-            <Button type="submit" className="w-full my-4">
-              Login
-            </Button>
-          )}
-          <span className="text-sm">
-            Don't have an account?{" "}
-            <Link to="/signup" className="text-blue-600">
-              Signup
-            </Link>
-          </span>
+
+          <div>
+            {loading ? (
+              <Button className="w-full my-4 bg-[#6A38C2] hover:bg-[#360985] text-white">
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                className="w-full my-4 bg-[#6A38C2] hover:bg-[#360985] text-white"
+              >
+                Login
+              </Button>
+            )}
+          </div>
+
+          <div className="text-center mt-4">
+            <span className="text-sm text-gray-600">
+              Don't have an account?{" "}
+              <Link to="/signup" className="text-[#6A38C2] hover:text-[#360985]">
+                Signup
+              </Link>
+            </span>
+          </div>
         </form>
       </div>
     </div>

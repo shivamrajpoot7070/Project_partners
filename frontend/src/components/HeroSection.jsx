@@ -1,95 +1,59 @@
-// import React, { useState } from "react";
-// import { useDispatch } from 'react-redux';
-// import { useNavigate } from 'react-router-dom';
-// import { Button } from "./ui/button";
-// import { Search } from "lucide-react";
-// import { setSearchedQuery } from "@/redux/jobSlice";
-
-// const HeroSection = () => {
-
-//     const [query, setQuery] = useState("");
-//     const dispatch = useDispatch();
-//     const navigate = useNavigate();
-
-//     const searchJobHandler=()=>{
-//       dispatch(setSearchedQuery(query));
-//       navigate('/browse');
-//     }
-
-//   return (
-//     <div className="text-center">
-//       <div className="flex flex-col gap-5 my-10">
-//         <span className=" mx-auto px-4 py-2 rounded-full bg-gray-100 text-[#F83002] font-medium">
-//           No. 1 Job Hunt Website
-//         </span>
-//         <h1 className="text-5xl font-bold">
-//           Search, Apply & <br /> Get Your{" "}
-//           <span className="text-[#6A38C2]">Dream Jobs</span>
-//         </h1>
-//         <p>
-//           Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
-//           aspernatur temporibus nihil tempora dolor!
-//         </p>
-//         <div className="flex w-[40%] shadow-lg border border-gray-200 pl-3 rounded-full items-center gap-4 mx-auto">
-//           <input
-//             type="text"
-//             placeholder="Find your dream jobs"
-//             onChange={(e) => setQuery(e.target.value)}
-//             className="outline-none border-none w-full"
-//           />
-
-//           <Button onClick={searchJobHandler} className="rounded-r-full">
-
-//             <Search className="h-5 w-5"/>
-
-//           </Button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default HeroSection;
-
-
-import React, { useState } from 'react'
-import { Button } from './ui/button'
-import { Search } from 'lucide-react'
-import { useDispatch } from 'react-redux';
-import { setSearchedQuery } from '@/redux/jobSlice';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Button } from "./ui/button";
+import { Search } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchedQuery } from "@/redux/jobSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const HeroSection = () => {
-    const [query, setQuery] = useState("");
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const searchJobHandler = () => {
-        dispatch(setSearchedQuery(query));
-        navigate("/browse");
+  const { user } = useSelector((store) => store.auth); // Access user state
+
+  const searchJobHandler = () => {
+    if (!user) {
+      // Show a message to log in if the user is not authenticated
+      toast.error("Please log in to search for projects!");
+      return;
     }
+    dispatch(setSearchedQuery(query));
+    navigate("/browse");
+  };
 
-    return (
-        <div className='text-center'>
-            <div className='flex flex-col gap-5 my-10'>
-                <span className=' mx-auto px-4 py-2 rounded-full bg-gray-100 text-[#F83002] font-medium'>No. 1 Website To find and make Projects</span>
-                <h1 className='text-5xl font-bold'>Search, Apply & <br /> Get a <span className='text-[#6A38C2]'>Chance to work on Live Projects</span></h1>
-                <p>We will Provide You Chance to work on a Project and to get a hand on experience</p>
-                <div className='flex w-[40%] shadow-lg border border-gray-200 pl-3 rounded-full items-center gap-4 mx-auto'>
-                    <input
-                        type="text"
-                        placeholder='Find your Projects'
-                        onChange={(e) => setQuery(e.target.value)}
-                        className='outline-none border-none w-full'
-                    />
-                    
-                    <Button onClick={searchJobHandler} className="rounded-r-full bg-[#6A38C2]">
-                        <Search className='h-5 w-5' />
-                    </Button>
-                </div>
-            </div>
+  return (
+    <div className="text-center">
+      <div className="flex flex-col gap-5 my-10">
+        <span className="mx-auto px-4 py-2 rounded-full bg-gray-100 text-[#F83002] font-medium">
+          No. 1 Website To Find and Make Projects
+        </span>
+        <h1 className="text-5xl font-bold">
+          Search, Apply & <br /> Get a{" "}
+          <span className="text-[#6A38C2]">Chance to Work on Live Projects</span>
+        </h1>
+        <p>
+          We will provide you the chance to work on projects and gain hands-on
+          experience.
+        </p>
+        <div className="flex w-[40%] shadow-lg border border-gray-200 pl-3 rounded-full items-center gap-4 mx-auto">
+          <input
+            type="text"
+            placeholder="Find your Projects"
+            onChange={(e) => setQuery(e.target.value)}
+            className="outline-none border-none w-full"
+          />
+          <Button
+            onClick={searchJobHandler}
+            className="rounded-r-full bg-[#6A38C2]"
+          >
+            <Search className="h-5 w-5" />
+          </Button>
         </div>
-    )
-}
+      </div>
+    </div>
+  );
+};
 
-export default HeroSection
+export default HeroSection;
