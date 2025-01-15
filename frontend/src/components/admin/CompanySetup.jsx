@@ -53,7 +53,8 @@ const CompanySetup = () => {
             setLoading(true);
             const res = await axios.put(`${COMPANY_END_POINT}/update/${params.id}`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`,
                 },
                 withCredentials: true
             });
