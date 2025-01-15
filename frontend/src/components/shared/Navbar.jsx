@@ -13,7 +13,7 @@ import { setUser } from "@/redux/authSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((store) => store.auth);
+  const { user } = useSelector((store) => store.auth); // Access the user from the Redux store
 
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -60,7 +60,26 @@ const Navbar = () => {
           }`}
         >
           <ul className="flex flex-col md:flex-row font-medium items-center gap-5 md:gap-12 py-4 md:py-0">
-            {user && user.role === "recruiter" ? (
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+
+            {user ? (
+              <>
+                <li>
+                  <Link to="/jobs">Latest Projects</Link>
+                </li>
+                <li>
+                  <Link to="/browse">Browse</Link>
+                </li>
+              </>
+            ) : (
+              <li>
+                <span className="text-gray-500">Please log in to access projects</span>
+              </li>
+            )}
+
+            {user && user.role === "recruiter" && (
               <>
                 <li>
                   <Link to="/admin/companies">Company Name</Link>
@@ -69,20 +88,7 @@ const Navbar = () => {
                   <Link to="/admin/jobs">Projects</Link>
                 </li>
                 <li>
-                  <Link to="/admin/interview">Schedule InterView</Link>
-                </li>
-
-              </>
-            ) : (
-              <>
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
-                <li>
-                  <Link to="/jobs">Latest Projects</Link>
-                </li>
-                <li>
-                  <Link to="/browse">Browse</Link>
+                  <Link to="/admin/interview">Schedule Interview</Link>
                 </li>
               </>
             )}
@@ -91,12 +97,10 @@ const Navbar = () => {
           {!user ? (
             <div className="flex flex-col md:flex-row items-center gap-5">
               <Link to="/login">
-                <Button variant="outline"> Login</Button>
+                <Button variant="outline">Login</Button>
               </Link>
               <Link to="/signup">
-                <Button className="bg-[#6A38C2] hover:bg-[#360985]">
-                  Signup
-                </Button>
+                <Button className="bg-[#6A38C2] hover:bg-[#360985]">Signup</Button>
               </Link>
             </div>
           ) : (
