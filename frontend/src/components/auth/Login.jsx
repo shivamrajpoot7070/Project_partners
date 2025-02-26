@@ -37,12 +37,13 @@ const Login = () => {
       });
 
       if (res.data.success) {
-        const { user, token, message } = res.data;
+        const { user, token, message } = res.data;  // user, token, message is coming from backend
 
         // Save the token to localStorage for future use
         localStorage.setItem("token", token);
 
         // Save user details in Redux store
+        // authslice is the slice name
         dispatch(setUser(user));
 
         navigate("/"); // Navigate to home page

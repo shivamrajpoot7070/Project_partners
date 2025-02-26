@@ -22,7 +22,6 @@ const companies = () => {
         dispatch(setSearchCompanyByText(input));
     },[input]);
 
-
   return (
     <div>
       <Navbar />
@@ -33,7 +32,7 @@ const companies = () => {
                         placeholder="Filter by name"
                         onChange={(e)=>setInput(e.target.value)}
                     />
-                    <Button onClick={()=>navigate("/admin/companies/create")}>New Company</Button>
+                    <Button onClick={()=>navigate("/admin/companies/create")}>Create New Project</Button>
                 </div>
                 <CompaniesTable/>
             </div>

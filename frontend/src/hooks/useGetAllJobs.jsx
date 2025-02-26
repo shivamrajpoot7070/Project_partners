@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 const useGetAllJobs = () => {
   const dispatch = useDispatch();
-  const { searchedQuery } = useSelector((store) => store.job); // Retrieve the search query from Redux
+
+  const { searchedQuery } = useSelector((store) => store.job);        // Retrieve the search query from Redux
 
   useEffect(() => {
+
     const fetchAllJobs = async () => {
       try {
         const token = localStorage.getItem("token"); // Retrieve Bearer token from localStorage
@@ -16,9 +18,9 @@ const useGetAllJobs = () => {
           headers: {
             Authorization: `Bearer ${token}`, // Include Bearer token
           },
-          withCredentials: true, // Include cookies
+          withCredentials: true,                         // Include cookies
           params: {
-            query: searchedQuery || undefined, // Optional query parameter for filtering jobs
+            query: searchedQuery || undefined,          // Optional query parameter for filtering jobs
           },
         });
 
@@ -26,7 +28,9 @@ const useGetAllJobs = () => {
         if (res.data.success) {
           dispatch(setAllJobs(res.data.jobs));
         }
-      } catch (error) {
+      }
+
+      catch (error) {
         console.error(
           error.response?.data?.message || "Failed to fetch jobs"
         );
@@ -34,7 +38,7 @@ const useGetAllJobs = () => {
     };
 
     fetchAllJobs();
-  }, [dispatch, searchedQuery]); // Add `searchedQuery` as a dependency to re-fetch when it changes
+  },[dispatch, searchedQuery]);    // Add `searchedQuery` as a dependency to re-fetch when it changes
 };
 
 export default useGetAllJobs;

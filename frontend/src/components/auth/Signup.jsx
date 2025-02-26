@@ -47,7 +47,7 @@ const Signup = () => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        withCredentials: true,
+        withCredentials: true,  // send cookies for authentication
       });
 
       if (res.data.success) {

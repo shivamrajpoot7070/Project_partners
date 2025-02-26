@@ -27,7 +27,8 @@ const Navbar = () => {
         navigate("/");
         toast.success(res.data.message);
       }
-    } catch (e) {
+    } 
+    catch (e) {
       toast.error("Logout failed. Please try again.");
     }
   };
@@ -37,7 +38,7 @@ const Navbar = () => {
       <div className="flex items-center justify-between mx-auto max-w-7xl px-4 h-16 md:px-8">
         <div>
           <h1 className="text-2xl font-bold">
-            Project<span className="text-[#F83002]">Partners</span>
+            Project<span className="text-[#029ef8]">Partners</span>
           </h1>
         </div>
 
@@ -87,7 +88,7 @@ const Navbar = () => {
               </>
             ) : (
               <li>
-                <span className="text-gray-500">Please log in to access projects</span>
+                <span className="text-red-500">Please log in to access projects</span>
               </li>
             )}
           </ul>

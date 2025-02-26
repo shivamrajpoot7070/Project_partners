@@ -15,7 +15,8 @@ const HeroSection = () => {
         if (!user) {
             // If user is not logged in, redirect to login page
             navigate("/login");
-        } else {
+        } 
+        else {
             // If logged in, proceed with search
             dispatch(setSearchedQuery(query));
             navigate("/browse");
