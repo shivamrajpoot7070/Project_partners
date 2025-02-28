@@ -15,12 +15,22 @@ const Interview = () => {
 
   const handleSendEmail = () => {
     const { recruiterEmail, studentEmail, subject, message } = emailData;
+  
+    // Clear the form before redirecting
+    setEmailData({
+      recruiterEmail: "",
+      studentEmail: "",
+      subject: "",
+      message: "",
+    });
+  
     const mailtoLink = `mailto:${studentEmail}?subject=${encodeURIComponent(
       subject
-    )}&body=${encodeURIComponent(
-      `From: ${recruiterEmail}\n\n${message}`
-    )}`;
-    window.location.href = mailtoLink; // Opens the default mail client
+    )}&body=${encodeURIComponent(`From: ${recruiterEmail}\n\n${message}`)}`;
+  
+    setTimeout(() => {
+      window.location.href = mailtoLink; // Redirect to mail client
+    }, 0); // Ensures state updates before redirection
   };
 
   return (

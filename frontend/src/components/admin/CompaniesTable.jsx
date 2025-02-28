@@ -39,7 +39,7 @@ const CompaniesTable = () => {
   return (
     <div>
       <Table>
-        <TableCaption>A list of your recent registered Companies</TableCaption>
+        <TableCaption>A list of recent registered Orgnizations</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Logo</TableHead>

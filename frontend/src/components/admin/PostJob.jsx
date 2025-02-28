@@ -172,12 +172,12 @@ const PostJob = () => {
                         </Button>
                     ) : (
                         <Button type="submit" className="w-full my-4">
-                            Post New Job
+                            Post New Project
                         </Button>
                     )}
                     {companies.length === 0 && (
                         <p className="text-xs text-red-600 font-bold text-center my-3">
-                            *Please register a company first, before posting a job
+                            *Please register a Orgnization first, before posting a Project
                         </p>
                     )}
                 </form>

@@ -37,9 +37,14 @@ const Navbar = () => {
     <div className="bg-white shadow-md sticky top-0 z-50">
       <div className="flex items-center justify-between mx-auto max-w-7xl px-4 h-16 md:px-8">
         <div>
-          <h1 className="text-2xl font-bold">
-            Project<span className="text-[#029ef8]">Partners</span>
-          </h1>
+        <h1 className="text-2xl font-bold transition-all duration-300 transform hover:scale-110">
+  Project
+  <span className="text-[#029ef8] hover:text-[#f87171] relative inline-block">
+    Partners
+    <span className="absolute left-0 bottom-0 w-0 h-1 bg-[#f87171] transition-all duration-300 hover:w-full"></span>
+  </span>
+</h1>
+
         </div>
 
         {/* Hamburger menu for mobile */}
@@ -76,13 +81,13 @@ const Navbar = () => {
               </>
             ) : user && user.role === "recruiter" ? (
               <>
-                <li>
-                  <Link to="/admin/companies">Company Name</Link>
+                <li style={{color:"brown"}}>
+                  <Link to="/admin/companies">Orgnization Name</Link>
                 </li>
-                <li>
+                <li style={{color:"brown"}}>
                   <Link to="/admin/jobs">Projects</Link>
                 </li>
-                <li>
+                <li style={{color:"brown"}}>
                   <Link to="/admin/interview">Schedule Interview</Link>
                 </li>
               </>

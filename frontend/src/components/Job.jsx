@@ -6,6 +6,7 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { useNavigate } from "react-router-dom";
 
 const Job = ({ job }) => {
+
   const navigate = useNavigate();
 
   const daysAgoFunction = (mongodbTime) => {
@@ -23,6 +24,7 @@ const Job = ({ job }) => {
             ? "Today"
             : `${daysAgoFunction(job?.createdAt)} days ago`}
         </p>
+
         <Button variant="outline" className="rounded-full" size="icon">
           <Bookmark />
         </Button>
@@ -36,7 +38,7 @@ const Job = ({ job }) => {
             </Avatar>
           </Button>
         </div>
-
+        
         <div className="flex-1">
           <h1 className="font-medium text-lg">{job?.company?.name}</h1>
           <p className="text-sm text-gray-500">India</p>
@@ -73,7 +75,7 @@ const Job = ({ job }) => {
         <Button
           onClick={() => navigate(`/description/${job?._id}`)}
           variant="outline"
-        >
+        >    
           Details
         </Button>
         <Button className="bg-[#7209b7] text-white hover:bg-[#5e089b]">
