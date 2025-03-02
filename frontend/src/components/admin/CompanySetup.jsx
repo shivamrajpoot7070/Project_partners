@@ -13,7 +13,7 @@ import useGetCompanyById from "@/hooks/useGetCompanyById";
 
 const CompanySetup = () => {
   const params = useParams();
-  useGetCompanyById(params.id); // Fetch the company data by ID
+  useGetCompanyById(params.id); // Fetch the company data by ID which you slected to delete
   const { singleCompany } = useSelector((store) => store.company);
 
   const [input, setInput] = useState({
@@ -153,7 +153,7 @@ const CompanySetup = () => {
             </Button>
           ) : (
             <Button type="submit" className="w-full my-4">
-              Update
+              Click here to Update
             </Button>
           )}
         </form>

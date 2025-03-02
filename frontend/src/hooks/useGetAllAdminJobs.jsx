@@ -12,7 +12,7 @@ const useGetAllAdminJobs = () => {
       console.log("Fetching all admin Projects...");
       try {
         const token = localStorage.getItem("token"); // Get token from localStorage
-        const res = await axios.get(`${JOB_END_POINT}/get`, {
+        const res = await axios.get(`${JOB_END_POINT}/getadminjobs`, {
           headers: {
             Authorization: `Bearer ${token}`, // Include Bearer token
           },

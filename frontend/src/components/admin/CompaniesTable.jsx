@@ -17,59 +17,54 @@ import store from "@/redux/store";
 import useGetAllCompanies from "@/hooks/useGetAllCompanies";
 
 const CompaniesTable = () => {
-
-  useGetAllCompanies(); // ye call kiye taki setallcompany wli slice me sara compnau chla jaye
-  const {companies,searchCompanyByText}=useSelector(store=>store.company);  // or yha fetch kr lo
-
-  const [filterCompany, setFilterCompany] = useState(companies);  // company rhega sara state me
-
+  useGetAllCompanies();
+  const { companies, searchCompanyByText } = useSelector((store) => store.company);
+  const [filterCompany, setFilterCompany] = useState(companies);
   const navigate = useNavigate();
 
-  useEffect(()=>{
-      const filteredCompany = companies.length >= 0 && companies.filter((company)=>{
-          if(!searchCompanyByText){
-              return true
-          };
-          return company?.name?.toLowerCase().includes(searchCompanyByText.toLowerCase());  // yha 
-          // yha filter compnay me search data chla jyga
+  useEffect(() => {
+    const filteredCompany =
+      companies.length >= 0 &&
+      companies.filter((company) => {
+        if (!searchCompanyByText) {
+          return true;
+        }
+        return company?.name?.toLowerCase().includes(searchCompanyByText.toLowerCase());
       });
-      setFilterCompany(filteredCompany);   // yha filter compnay me search data chla jyga
-    },[companies,searchCompanyByText])  //ye globla tha search compnay by text
+    setFilterCompany(filteredCompany);
+  }, [companies, searchCompanyByText]);
 
   return (
-    <div>
-      <Table>
-        <TableCaption>A list of recent registered Orgnizations</TableCaption>
-        <TableHeader>
+    <div className="overflow-x-auto bg-gradient-to-r from-purple-200 via-pink-200 to-orange-200 shadow-lg rounded-lg p-4">
+      <Table className="w-full">
+        <TableCaption className="text-gray-600">A list of recent registered Organizations</TableCaption>
+        <TableHeader className="bg-purple-300">
           <TableRow>
-            <TableHead>Logo</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead className="text-right">Action</TableHead>
+            <TableHead className="font-semibold text-purple-800">Logo</TableHead>
+            <TableHead className="font-semibold text-purple-800">Name</TableHead>
+            <TableHead className="font-semibold text-purple-800">Date</TableHead>
+            <TableHead className="text-right font-semibold text-purple-800">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filterCompany?.map((company) => (  // jo filtercompany m hai wo dikhega phle pura
-          // fir seach wla khud aa jyga
-            <tr>
+          {filterCompany?.map((company) => (
+            <TableRow key={company._id} className="hover:bg-pink-100">
               <TableCell>
                 <Avatar>
                   <AvatarImage src={company.logo} />
                 </Avatar>
               </TableCell>
-              <TableCell>{company.name}</TableCell>
-              <TableCell>{company.createdAt.split("T")[0]}</TableCell>
+              <TableCell className="text-gray-700">{company.name}</TableCell>
+              <TableCell className="text-gray-700">{company.createdAt.split("T")[0]}</TableCell>
               <TableCell className="text-right cursor-pointer">
                 <Popover>
                   <PopoverTrigger>
-                    <MoreHorizontal />
+                    <MoreHorizontal className="cursor-pointer text-pink-600 hover:text-pink-800" />
                   </PopoverTrigger>
-                  <PopoverContent className="w-32">
+                  <PopoverContent className="w-32 bg-white shadow-md rounded-lg p-2">
                     <div
-                      onClick={() =>
-                        navigate(`/admin/companies/${company._id}`)
-                      }
-                      className="flex items-center gap-2 w-fit cursor-pointer"
+                      onClick={() => navigate(`/admin/companies/${company._id}`)}
+                      className="flex items-center gap-2 p-2 hover:bg-purple-200 rounded cursor-pointer text-purple-800"
                     >
                       <Edit2 className="w-4" />
                       <span>Edit</span>
@@ -77,7 +72,7 @@ const CompaniesTable = () => {
                   </PopoverContent>
                 </Popover>
               </TableCell>
-            </tr>
+            </TableRow>
           ))}
         </TableBody>
       </Table>
