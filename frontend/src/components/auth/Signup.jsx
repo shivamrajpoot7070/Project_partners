@@ -14,6 +14,7 @@ import { Loader2 } from "lucide-react";
 
 const Signup = () => {
 
+  //const USER="http://localhost:1000/api/v1/user";
   
   const [input, setInput] = useState({
     fullname: "",

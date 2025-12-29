@@ -121,7 +121,8 @@ export const login = async (req, res) => {
             .cookie("token", token, {
                 maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
                 httpOnly: true, // Prevent JavaScript access
-                sameSite: 'strict' // Prevent CSRF attacks
+                sameSite: 'strict', // Prevent CSRF attacks
+                secure: true, // Use true if using HTTPS
             })
             .json({
                 message: `Welcome back ${user.fullname}`,
@@ -129,7 +130,8 @@ export const login = async (req, res) => {
                 token, // Include the bearer token in the response
                 success: true
             });
-    } catch (error) {
+    } 
+    catch (error) {
         console.log(error);
         return res.status(500).json({
             message: "Internal server error.",

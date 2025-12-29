@@ -13,6 +13,9 @@ import { setLoading, setUser } from "@/redux/authSlice";
 import { Loader2 } from "lucide-react";
 
 const Login = () => {
+
+ // const USER = "http://localhost:1000/api/v1/user";
+
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -20,6 +23,7 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const { loading } = useSelector((store) => store.auth);
 
@@ -49,10 +53,12 @@ const Login = () => {
         navigate("/"); // Navigate to home page
         toast.success(message);
       }
-    } catch (e) {
+    } 
+    catch (e) {
       console.error(e);
       toast.error(e.response?.data?.message || "Something went wrong!");
-    } finally {
+    } 
+    finally {
       dispatch(setLoading(false));
     }
   };

@@ -13,38 +13,21 @@
 //   };
 
 // export default connectDB;
-
 import mongoose from "mongoose";
 
-let cached = global.mongoose;
-
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
+let isConnected = false;
 
 const connectDB = async () => {
-  if (cached.conn) {
-    return cached.conn;
-  }
-
-  if (!cached.promise) {
-    cached.promise = mongoose
-      .connect(process.env.MONGO_URI, {
-        bufferCommands: false,
-      })
-      .then((mongoose) => {
-        return mongoose;
-      });
-  }
+  if (isConnected) return;
 
   try {
-    cached.conn = await cached.promise;
+    await mongoose.connect(process.env.MONGO_URI);
+    isConnected = true;
+    console.log("MongoDB connected");
   } catch (err) {
-    cached.promise = null;
-    throw err; // 🔥 VERY IMPORTANT
+    console.error("MongoDB connection failed:", err);
+    throw err; 
   }
-
-  return cached.conn;
 };
 
 export default connectDB;

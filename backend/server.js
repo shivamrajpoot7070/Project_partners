@@ -10,7 +10,8 @@ import applicationRoute from './routes/application.route.js'
 //import applicationRouter from "./routes/application.route.js";
 
 dotenv.config();
-connectDB();  // made in utils
+
+const PORT= process.env.PORT || 3000;
 
 const app=express();
 
@@ -21,14 +22,14 @@ app.use(cookieParser());
 app.use(
     cors({
       origin: [
-        "http://localhost:3000", // Localhost development
-        "https://project-partners-khkm.vercel.app", // Devtunnel URL
+        "http://localhost:3000",                      // Localhost development
+        "https://project-partners-khkm.vercel.app",   // Devtunnel URL
       ],
       credentials: true, // Required for withCredentials to work
     })
   );
 
-const PORT=process.env.PORT || 3000;
+
 
 app.get("/", (req, res) => res.send("Express on Vercel backend is deployed here!!"));
 
@@ -37,7 +38,13 @@ app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
 
-// ndkj
-app.listen(PORT,()=>{
-    console.log(`Server is runninggg on port ${PORT}`);
-});
+
+const startServer = async () => {
+  await connectDB();
+
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+};
+
+startServer();
