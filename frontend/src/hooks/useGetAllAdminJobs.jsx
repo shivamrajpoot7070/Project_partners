@@ -5,12 +5,17 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 const useGetAllAdminJobs = () => {
+
   const dispatch = useDispatch();
 
   useEffect(() => {
+
     const fetchAllAdminJobs = async () => {
+
       console.log("Fetching all admin Projects...");
+
       try {
+        
         const token = localStorage.getItem("token"); // Get token from localStorage
         const res = await axios.get(`${JOB_END_POINT}/getadminjobs`, {
           headers: {
@@ -23,7 +28,8 @@ const useGetAllAdminJobs = () => {
         if (res.data.success) {
           dispatch(setAllAdminJobs(res.data.jobs));
         }
-      } catch (error) {
+      }
+      catch (error) {
         console.error(error.response?.data?.message || "Failed to fetch jobs");
       }
     };

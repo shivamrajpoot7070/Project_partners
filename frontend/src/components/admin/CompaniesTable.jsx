@@ -17,7 +17,9 @@ import store from "@/redux/store";
 import useGetAllCompanies from "@/hooks/useGetAllCompanies";
 
 const CompaniesTable = () => {
+
   useGetAllCompanies();
+  
   const { companies, searchCompanyByText } = useSelector((store) => store.company);
   const [filterCompany, setFilterCompany] = useState(companies);
   const navigate = useNavigate();

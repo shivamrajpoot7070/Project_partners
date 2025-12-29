@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import Navbar from './shared/Navbar';
 
 const JobDescription = () => {
+
     const params = useParams();
     const jobId = params.id;
     const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const JobDescription = () => {
 
     const applyJobHandler = async () => {
         try {
+            
             const token = localStorage.getItem('token');
 
             const res = await axios.get(`${APPLICATION_END_POINT}/apply/${jobId}`, {
@@ -47,6 +49,7 @@ const JobDescription = () => {
     };
 
     useEffect(() => {
+        
         const fetchSingleJob = async () => {
             try {
                 const token = localStorage.getItem('token');

@@ -522,7 +522,6 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     const submitHandler = async (e) => {
         e.preventDefault();
         setLoading(true);
-
         try {
             const token = localStorage.getItem('token');
 

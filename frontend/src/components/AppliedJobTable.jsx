@@ -10,8 +10,8 @@ const AppliedJobTable = () => {
 
   return (
     <div>
+        
         <Table>
-
             <TableCaption>
                 <h2>List of your applied Projects</h2>
             </TableCaption>

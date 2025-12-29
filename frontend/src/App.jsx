@@ -15,12 +15,14 @@ import PostJob from "./components/admin/PostJob"
 import Applicants from "./components/admin/Applicants"
 import ProtectedRoute from "./components/admin/ProtectedRoute"
 import Interview from "./components/admin/Interview"
+
 const approuter=createBrowserRouter([
+
   {
     path:"/",
     element:<Home/>
-
   },
+  
   {
     path:"/login",
     element:<Login/>
@@ -60,18 +62,12 @@ const approuter=createBrowserRouter([
   },
 
   {
-
     path:"/admin/companies/create",
     element:<ProtectedRoute><Companycreate/></ProtectedRoute>
-
   },
-
   {
-
     path:"/admin/companies/:id",
-    element:<ProtectedRoute><CompanySetup/></ProtectedRoute>
-
-  },
+    element:<ProtectedRoute><CompanySetup/></ProtectedRoute>  },
 
   {
 
@@ -109,4 +105,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

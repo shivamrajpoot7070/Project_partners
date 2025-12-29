@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { setUser } from "@/redux/authSlice";
 
 const Navbar = () => {
+  
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth); // Access the user from the Redux store
   const navigate = useNavigate();
@@ -112,7 +113,11 @@ const Navbar = () => {
             <Popover>
               <PopoverTrigger asChild>
                 <Avatar className="cursor-pointer">
-                  <img src={user?.profile?.profilePhoto} alt="User Avatar" />
+                  <img
+  src={user?.profile?.profilePhoto}
+  alt={user?.fullname || "User Avatar"}
+  className="w-10 h-10 rounded-full object-cover"
+/>
                 </Avatar>
               </PopoverTrigger>
 

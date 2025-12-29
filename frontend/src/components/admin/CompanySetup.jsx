@@ -13,7 +13,8 @@ import useGetCompanyById from "@/hooks/useGetCompanyById";
 
 const CompanySetup = () => {
   const params = useParams();
-  useGetCompanyById(params.id); // Fetch the company data by ID which you slected to delete
+  useGetCompanyById(params.id); // Fetch the company data by ID which you slected to edit
+
   const { singleCompany } = useSelector((store) => store.company);
 
   const [input, setInput] = useState({
@@ -61,7 +62,6 @@ const CompanySetup = () => {
           withCredentials: true, // Include cookies
         }
       );
-
       if (res.data.success) {
         toast.success(res.data.message);
         navigate("/admin/companies");
@@ -121,7 +121,7 @@ const CompanySetup = () => {
               />
             </div>
             <div>
-              <Label>Website</Label>
+              <Label>Website or Github Link</Label>
               <Input
                 type="text"
                 name="website"

@@ -8,14 +8,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import ApplicantsTable from './ApplicantsTable';
 import { setAllApplicants } from '@/redux/applicationSlice';
 
+
 const Applicants = () => {
+    
     const params = useParams();
     const dispatch = useDispatch();
     const { applicants } = useSelector(store => store.application);
 
     useEffect(() => {
+
         const fetchAllApplicants = async () => {
+
             try {
+                // fetch applied students for clicked project..param id is project id 
                 const token = localStorage.getItem('token'); // Get token from localStorage
                 const res = await axios.get(`${APPLICATION_END_POINT}/${params.id}/applicants`, {
                     withCredentials: true,
@@ -24,9 +29,11 @@ const Applicants = () => {
                         'Content-Type': 'application/json'
                     }
                 });
-                dispatch(setAllApplicants(res.data.job)); // Update the state with fetched applicants
+                dispatch(setAllApplicants(res.data.job)); // Update the state with fetched applicants job is coming from the backend having all the applicants
                 console.log(res.data);
-            } catch (error) {
+            }
+
+            catch (error) {
                 console.log(error);
             }
         }

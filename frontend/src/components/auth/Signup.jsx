@@ -13,6 +13,9 @@ import { setLoading } from "@/redux/authSlice";
 import { Loader2 } from "lucide-react";
 
 const Signup = () => {
+
+  //const USER = "http://localhost:1000/api/v1/user";
+  
   const [input, setInput] = useState({
     fullname: "",
     email: "",
@@ -26,42 +29,45 @@ const Signup = () => {
   const { loading } = useSelector(store => store.auth);
   const dispatch = useDispatch();
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    console.log(input);
+  const USER = "http://localhost:1000/api/v1/user";
 
-    const formData = new FormData();
-    formData.append("fullname", input.fullname);
-    formData.append("email", input.email);
-    formData.append("phoneNumber", input.phoneNumber);
-    formData.append("password", input.password);
-    formData.append("role", input.role);
+const submitHandler = async (e) => {
+  e.preventDefault();
 
-    if (input.file) {
-      formData.append("file", input.file);
-    }
+  console.log(input);
 
-    try {
-      dispatch(setLoading(true));
-      const res = await axios.post(`${USER_END_POINT}/register`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,  // send cookies for authentication
-      });
+  try {
+    dispatch(setLoading(true));
 
-      if (res.data.success) {
-        navigate("/login");
-        toast.success(res.data.message);
+    const res = await axios.post(
+      `${USER}/register`,
+      {
+        fullname: input.fullname,
+        email: input.email,
+        phoneNumber: input.phoneNumber,
+        password: input.password,
+        role: input.role,
+      },
+      {
+        withCredentials: true,
       }
+    );
 
-    } catch (e) {
-      console.log(e);
-      toast.error(e.response.data.message);
-    } finally {
-      dispatch(setLoading(false));
+    if (res.data.success) {
+      toast.success(res.data.message);
+      navigate("/login");
     }
-  };
+  } catch (e) {
+    console.error(e);
+
+    toast.error(
+      e.response?.data?.message || "Registration failed"
+    );
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
+
 
   function changeEventHandler(e) {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -150,16 +156,6 @@ const Signup = () => {
                 <Label htmlFor="r2">Recruiter</Label>
               </div>
             </RadioGroup>
-
-            <div className="flex items-center gap-4 w-full md:w-auto">
-              <Label>Profile Picture</Label>
-              <Input
-                accept="image/*"
-                type="file"
-                onChange={changeFileHandler}
-                className="cursor-pointer"
-              />
-            </div>
           </div>
 
           {loading ? (

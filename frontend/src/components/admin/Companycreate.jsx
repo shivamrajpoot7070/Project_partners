@@ -65,7 +65,7 @@ const Companycreate = () => {
           <Button variant="outline" onClick={() => navigate('/admin/companies')}>
             Cancel
           </Button>
-          <Button onClick={registerNewCompany}>Continue</Button>
+          <Button onClick={registerNewCompany}>Continue</Button> // this will lead to the company setup page
         </div>
       </div>
     </div>
