@@ -14,7 +14,6 @@ import { Loader2 } from "lucide-react";
 
 const Signup = () => {
 
-  //const USER = "http://localhost:1000/api/v1/user";
   
   const [input, setInput] = useState({
     fullname: "",
@@ -29,8 +28,6 @@ const Signup = () => {
   const { loading } = useSelector(store => store.auth);
   const dispatch = useDispatch();
 
-  const USER = "http://localhost:1000/api/v1/user";
-
 const submitHandler = async (e) => {
   e.preventDefault();
 
@@ -40,7 +37,7 @@ const submitHandler = async (e) => {
     dispatch(setLoading(true));
 
     const res = await axios.post(
-      `${USER}/register`,
+      `${USER_END_POINT}/register`,
       {
         fullname: input.fullname,
         email: input.email,
