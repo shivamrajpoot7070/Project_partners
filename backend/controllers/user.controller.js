@@ -3,54 +3,66 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
+
 // import getDataUri from "../utils/datauri.js";
 // import cloudinary from "../utils/cloudinary.js";
+
 export const register = async (req, res) => {
-    try {
-        const { fullname, email, phoneNumber, password, role } = req.body;
-         
-        if (!fullname || !email || !phoneNumber || !password || !role) {
-            return res.status(400).json({
-                message: "Something is missing",
-                success: false
-            });
-        };
-        // const file = req.file; 
-        // const fileUri = getDataUri(file);
-        // const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-
-        const file=req.file;
-        const fileUri = getDataUri(file);
-        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-
-        const user = await User.findOne({ email });
-        if (user) {
-            return res.status(400).json({
-                message: 'User already exist with this email.',
-                success: false,
-            })
-        }
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        await User.create({
-            fullname,
-            email,
-            phoneNumber,
-            password: hashedPassword,
-            role,
-            profile:{
-                 profilePhoto:cloudResponse.secure_url,
-            }
-        });
-
-        return res.status(201).json({
-            message: "Account created successfully.",
-            success: true
-        });
-    } catch (error) {
-        console.log(error);
+  try {
+    console.log("REGISTER REQ BODY:", req.body);
+    // ✅ Handle CORS preflight safely
+    if (req.method === "OPTIONS") {
+      return res.sendStatus(200);
     }
-}
+
+    const { fullname, email, phoneNumber, password, role } = req.body;
+
+    // ✅ Basic validation
+    if (!fullname || !email || !phoneNumber || !password || !role) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+
+    // ✅ Check existing user
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User already exists with this email",
+      });
+    }
+
+    // ✅ Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // ✅ Create user
+    await User.create({
+      fullname,
+      email,
+      phoneNumber,
+      password: hashedPassword,
+      role,
+      profile: {
+        profilePhoto: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(fullname)}`,
+      },
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "Account created successfully",
+    });
+  } 
+  catch (error) {
+    console.error("REGISTER ERROR:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
 
 export const login = async (req, res) => {
     try {
@@ -132,11 +144,11 @@ export const logout = async (req, res) => {
             message: "Logged out successfully.",
             success: true
         })
-    } catch (error) {
+    }
+    catch (error) {
         console.log(error);
     }
 }
-
 
 export const updateProfile = async (req, res) => {
     try {
@@ -146,18 +158,21 @@ export const updateProfile = async (req, res) => {
 
         let cloudResponse;
 
-        // If there's a file (for profile photo, etc.), handle Cloudinary upload (optional)
         const file = req.file;
+
         console.log(file);
+
         if (file) {
             const fileUri = getDataUri(file);
             cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-        } else {
+        }
+        else {
             console.log("No file uploaded for profile photo");
         }
 
         let skillsArray;
-        if (skills) {
+
+        if (skills){
             skillsArray = skills.split(",").map(skill => skill.trim());
         }
 
@@ -183,12 +198,10 @@ export const updateProfile = async (req, res) => {
             user.profile.resume = resumeLink; // Save the Google Drive link
             user.profile.resumeOriginalName = "Google Drive Resume"; // Optionally, you can set this to something like "Google Drive Resume"
         }
-
         // If a new profile photo was uploaded, save it
         if (cloudResponse) {
             user.profile.profilePhoto = cloudResponse.secure_url; // Save the Cloudinary URL
         }
-
         await user.save();
 
         user = {
@@ -205,7 +218,8 @@ export const updateProfile = async (req, res) => {
             user,
             success: true
         });
-    } catch (error) {
+    }
+     catch (error) {
         console.log(error);
         return res.status(500).json({
             message: "Internal server error.",

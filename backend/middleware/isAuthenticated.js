@@ -15,6 +15,7 @@ const isAuthenticated = async (req, res, next) => {
         }
 
         // Verify the token
+        
         const decode = await jwt.verify(token, process.env.SECRET_KEY);
         if (!decode) {
             return res.status(401).json({
@@ -24,9 +25,10 @@ const isAuthenticated = async (req, res, next) => {
         }
 
         // Attach user ID to request object
-        req.id = decode.userId;
+        req.id = decode.userId;  // isko req ko de dega taki aage ye use kar sake protected route me
         next();
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Authentication error:", error);
         return res.status(500).json({
             message: "Internal server error during authentication",

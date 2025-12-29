@@ -3,8 +3,8 @@ import { Job } from "../models/job.model.js";
 
 export const applyJob = async (req, res) => {
     try {
-        const userId = req.id;
-        const jobId = req.params.id;
+        const userId = req.id;  // from token
+        const jobId = req.params.id;  // from url
         if (!jobId) {
             return res.status(400).json({
                 message: "Job id is required.",
@@ -30,12 +30,12 @@ export const applyJob = async (req, res) => {
             })
         }
         // create a new application
-        const newApplication = await Application.create({
-            job:jobId,
-            applicant:userId,
+        const newApplication = await Application.create({ // create new application
+            job:jobId, 
+            applicant:userId, // from token
         });
 
-        job.applications.push(newApplication._id);
+        job.applications.push(newApplication._id); // job ke andr application  me jake  application id push krdo
         await job.save();
         return res.status(201).json({
             message:"Job applied successfully.",
@@ -45,18 +45,19 @@ export const applyJob = async (req, res) => {
         console.log(error);
     }
 };
+
 export const getAppliedJobs = async (req,res) => {
     try {
         const userId = req.id;
-        const application = await Application.find({applicant:userId}).sort({createdAt:-1}).populate({
-            path:'job',
+        const application = await Application.find({applicant:userId}).sort({createdAt:-1}).populate({// applicant me logged in user id hai
+            path:'job',  // job ka data bhi chahiye application k sath 
             options:{sort:{createdAt:-1}},
             populate:{
-                path:'company',
+                path:'company', // company ka data bhi chahiye job k sath
                 options:{sort:{createdAt:-1}},
             }
         });
-        if(!application){
+        if(!application){ 
             return res.status(404).json({
                 message:"No Applications",
                 success:false
@@ -109,6 +110,7 @@ export const updateStatus = async (req,res) => {
 
         // find the application by applicantion id
         const application = await Application.findOne({_id:applicationId});
+        
         if(!application){
             return res.status(404).json({
                 message:"Application not found.",

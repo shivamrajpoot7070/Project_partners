@@ -30,8 +30,8 @@ app.use(
 
 const PORT=process.env.PORT || 3000;
 
-// api
-app.get("/", (req, res) => res.send("Express on Vercel"));
+app.get("/", (req, res) => res.send("Express on Vercel backend is deployed here!!"));
+
 app.use("/api/v1/user", UserRoute);
 app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", jobRoute);
@@ -39,6 +39,5 @@ app.use("/api/v1/application", applicationRoute);
 
 // ndkj
 app.listen(PORT,()=>{
-    
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is runninggg on port ${PORT}`);
 });

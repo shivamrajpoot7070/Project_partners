@@ -1,5 +1,4 @@
 import { Company } from "../models/company.model.js";
-;
 import getDataUri from "../utils/datauri.js"
 import cloudinary from "../utils/cloudinary.js";
 
@@ -23,7 +22,7 @@ export const registerCompany = async (req, res) => {
 
         company = await Company.create({
             name: companyName,
-            userId: req.id
+            userId: req.id   // logged in user id taki baad me is id se company dekh paye
         });
 
         return res.status(201).json({
@@ -39,41 +38,60 @@ export const registerCompany = async (req, res) => {
 // jo user login hai wai apna created company dekh skta hai
 export const getCompany = async (req, res) => {
     try {
-        const userId = req.id; // logged in user id
-        const companies = await Company.find({ userId });
-        if (!companies) {
-            return res.status(404).json({
-                message: "Companies not found.",
+        if (!req.id) {
+            return res.status(401).json({
+                message: "Unauthorized access.",
                 success: false
-            })
+            });
         }
+
+        const companies = await Company.find({ userId: req.id });
+
+        if (companies.length === 0) {
+            return res.status(404).json({
+                message: "No companies found.",
+                success: false
+            });
+        }
+
         return res.status(200).json({
             companies,
-            success:true
-        })
+            success: true
+        });
     } catch (error) {
-        console.log(error);
+        console.error("Error fetching companies:", error);
+        return res.status(500).json({
+            message: "Internal server error.",
+            success: false
+        });
     }
-}
+};
 // get company by id
 export const getCompanyById = async (req, res) => {
     try {
         const companyId = req.params.id;
         const company = await Company.findById(companyId);
+
         if (!company) {
             return res.status(404).json({
                 message: "Company not found.",
                 success: false
-            })
+            });
         }
+
         return res.status(200).json({
             company,
             success: true
-        })
+        });
+        
     } catch (error) {
-        console.log(error);
+        console.error("Error fetching company by ID:", error);
+        return res.status(500).json({
+            message: "Internal server error.",
+            success: false
+        });
     }
-}
+};
 export const updateCompany = async (req, res) => {
     try {
         const { name, description, website, location } = req.body;

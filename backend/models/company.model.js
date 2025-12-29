@@ -20,7 +20,7 @@ const companySchema = new mongoose.Schema({
     },
     userId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
+        ref:'User', // jaise hi user create krega company to uska id yaha store hoga
         required:true
     }
 },{timestamps:true})
