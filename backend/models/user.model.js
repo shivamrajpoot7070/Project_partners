@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
         bio: { type: String },
         skills: { type: [String] },
         resume: { type: String },  // Google Drive link will be stored here
-        resumeOriginalName: { type: String },  // Optional field to store the original name if needed
+       // resumeOriginalName: { type: String },  // Optional field to store the original name if needed
         company: { type: mongoose.Types.ObjectId, ref: 'Company' },
         profilePhoto: { type: String, default: "" }  // Optional field for profile photo
     },

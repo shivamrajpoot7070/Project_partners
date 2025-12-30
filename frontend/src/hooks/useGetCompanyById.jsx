@@ -5,11 +5,13 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 const useGetCompanyById = (companyId) => {
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     
     const fetchSingleCompany = async () => {
+
       try {
         const token = localStorage.getItem("token"); // Retrieve Bearer token from localStorage
         const res = await axios.get(`${COMPANY_END_POINT}/get/${companyId}`, {
@@ -23,7 +25,8 @@ const useGetCompanyById = (companyId) => {
         if (res.data.success) {
           dispatch(setSingleCompany(res.data.company));
         }
-      } catch (error) {
+      }
+       catch (error) {
         console.error(
           error.response?.data?.message || "Failed to fetch company by ID"
         );

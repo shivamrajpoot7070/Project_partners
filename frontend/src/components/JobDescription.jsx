@@ -19,12 +19,15 @@ const JobDescription = () => {
     const { user } = useSelector((store) => store.auth);
 
     const isIntiallyApplied=
-        singleJob?.applications?.some((application) => application.applicant === user?._id) || false;
+
+    singleJob?.applications?.some((application) => application.applicant === user?._id) || false;
+
     const [isApplied, setIsApplied] = useState(isIntiallyApplied);
 
     const applyJobHandler = async () => {
+
         try {
-            
+
             const token = localStorage.getItem('token');
 
             const res = await axios.get(`${APPLICATION_END_POINT}/apply/${jobId}`, {
@@ -42,7 +45,8 @@ const JobDescription = () => {
                 dispatch(setSingleJob(updatedSingleJob));
                 toast.success(res.data.message);
             }
-        } catch (e) {
+        } 
+        catch (e) {
             toast.error(e.response?.data?.message || 'Error applying for the job');
             console.log(e);
         }

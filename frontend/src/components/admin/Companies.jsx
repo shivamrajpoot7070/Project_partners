@@ -6,8 +6,11 @@ import CompaniesTable from "./CompaniesTable";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setSearchCompanyByText } from "@/redux/companySlice";
+import useGetAllCompanies from "@/hooks/useGetAllCompanies";
 
 const companies = () => {
+
+    useGetAllCompanies();
 
     const navigate=useNavigate();
 
@@ -32,7 +35,7 @@ const companies = () => {
                         placeholder="Filter by name"
                         onChange={(e)=>setInput(e.target.value)}
                     />
-                    <Button onClick={()=>navigate("/admin/companies/create")}>Create New Orgnization</Button>
+                    <Button onClick={()=>navigate("/admin/companies/create")}>Create New Organization</Button>
                 </div>
                 <CompaniesTable/>
             </div>

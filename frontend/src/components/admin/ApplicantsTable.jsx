@@ -10,6 +10,7 @@ import axios from 'axios';
 const shortlistingStatus = ["Accepted", "Rejected"];
 
 const ApplicantsTable = () => {
+    
     const { applicants } = useSelector(store => store.application);
 
     const statusHandler = async (status, id) => {
@@ -25,7 +26,8 @@ const ApplicantsTable = () => {
             if (res.data.success) {
                 toast.success(res.data.message);
             }
-        } catch (error) {
+        } 
+        catch (error) {
             toast.error(error.response?.data?.message || 'Error updating status');
         }
     }
@@ -55,7 +57,7 @@ const ApplicantsTable = () => {
                                     {
                                         item.applicant?.profile?.resume ? 
                                         <a className="text-blue-600 cursor-pointer" href={item?.applicant?.profile?.resume} target="_blank" rel="noopener noreferrer">
-                                            {item?.applicant?.profile?.resumeOriginalName}
+                                            Resume Link
                                         </a> 
                                         : <span>NA</span>
                                     }

@@ -9,15 +9,16 @@ const useGetAllAdminJobs = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("useGetAllAdminJobs hook called.");
 
     const fetchAllAdminJobs = async () => {
 
       console.log("Fetching all admin Projects...");
 
       try {
-        
+        console.log("Preparing to make API call to fetch jobs.");
         const token = localStorage.getItem("token"); // Get token from localStorage
-        const res = await axios.get(`${JOB_END_POINT}/getadminjobs`, {
+        const res = await axios.get(`${JOB_END_POINT}/getadminjobs`,{
           headers: {
             Authorization: `Bearer ${token}`, // Include Bearer token
           },
@@ -28,12 +29,14 @@ const useGetAllAdminJobs = () => {
         if (res.data.success) {
           dispatch(setAllAdminJobs(res.data.jobs));
         }
+        else {
+          console.error("Failed to fetch jobs: ", res.data.message);
+        }
       }
       catch (error) {
         console.error(error.response?.data?.message || "Failed to fetch jobs");
       }
     };
-
     fetchAllAdminJobs();
   }, [dispatch]);
 };

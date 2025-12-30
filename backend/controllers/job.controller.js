@@ -47,12 +47,6 @@ export const getAllJobs = async (req, res) => {
             path: "company" // company ka data bhi chahiye job k sath
         }).sort({ createdAt: -1 });  // latest job first
 
-        if (!jobs) {
-            return res.status(404).json({
-                message: "Jobs not found.",
-                success: false
-            })
-        };
         return res.status(200).json({
             jobs,
             success: true
@@ -68,41 +62,33 @@ export const getJobById = async (req, res) => {
         const job = await Job.findById(jobId).populate({  // job id me rhega kon apply kiaa wo populate se nikal lo
             path:"applications" // job k sath applications jisne apply kiaa wo bhi chahiye
         });
-        if (!job) {
-            return res.status(404).json({
-                message: "Jobs not found.",
-                success: false
-            })
-        };
         return res.status(200).json({ job, success: true });
-    } catch (error) {
+    } 
+    catch (error) {
         console.log(error);
     }
 }
 // admin kitne job create kra hai abhi tk
+
 export const getAdminJobs = async (req, res) => {
-    try {
-        const adminId = req.id;
-        const jobs = await Job.find({ created_by: adminId })
-            .populate("company") // Populate company details
-            .sort({ createdAt: -1 }); // Sort by latest first
+  try {
+    const adminId = req.id; 
 
-        if (jobs.length === 0) {
-            return res.status(404).json({
-                message: "No jobs found.",
-                success: false
-            });
-        }
+    const jobs = await Job.find({ created_by: adminId })
+      .populate("company")
+      .sort({ createdAt: -1 });
 
-        return res.status(200).json({
-            jobs,
-            success: true
-        });
-    } catch (error) {
-        console.error("Error fetching admin jobs:", error);
-        return res.status(500).json({
-            message: "Internal server error.",
-            success: false
-        });
-    }
+    return res.status(200).json({
+      success: true,
+      jobs,
+    });
+
+  } 
+  catch (error) {
+    console.error("Error fetching admin jobs:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
 };

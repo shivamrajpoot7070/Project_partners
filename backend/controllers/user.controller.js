@@ -154,78 +154,57 @@ export const logout = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-        const { fullname, email, phoneNumber, bio, skills, resumeLink } = req.body; // Accept resumeLink
 
-        console.log(fullname, email, phoneNumber, bio, skills, resumeLink); // Log the inputs
+    const { fullname, email, phoneNumber, bio, skills, resumeLink } = req.body;
 
-        let cloudResponse;
+    const userId = req.id;
+; // from isAuthenticated middleware
+    let user = await User.findById(userId);
 
-        const file = req.file;
-
-        console.log(file);
-
-        if (file) {
-            const fileUri = getDataUri(file);
-            cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-        }
-        else {
-            console.log("No file uploaded for profile photo");
-        }
-
-        let skillsArray;
-
-        if (skills){
-            skillsArray = skills.split(",").map(skill => skill.trim());
-        }
-
-        const userId = req.id; // middleware authentication
-        let user = await User.findById(userId);
-
-        if (!user) {
-            return res.status(400).json({
-                message: "User not found.",
-                success: false
-            });
-        }
-
-        // Updating user details
-        if (fullname) user.fullname = fullname;
-        if (email) user.email = email;
-        if (phoneNumber) user.phoneNumber = phoneNumber;
-        if (bio) user.profile.bio = bio;
-        if (skills) user.profile.skills = skillsArray;
-
-        // If Google Drive link for resume is provided, save it
-        if (resumeLink) {
-            user.profile.resume = resumeLink; // Save the Google Drive link
-            user.profile.resumeOriginalName = "Google Drive Resume"; // Optionally, you can set this to something like "Google Drive Resume"
-        }
-        // If a new profile photo was uploaded, save it
-        if (cloudResponse) {
-            user.profile.profilePhoto = cloudResponse.secure_url; // Save the Cloudinary URL
-        }
-        await user.save();
-
-        user = {
-            _id: user._id,
-            fullname: user.fullname,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-            role: user.role,
-            profile: user.profile
-        };
-
-        return res.status(200).json({
-            message: "Profile updated successfully.",
-            user,
-            success: true
-        });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
-     catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message: "Internal server error.",
-            success: false
-        });
+
+    if (fullname) user.fullname = fullname;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (bio) user.profile.bio = bio;
+
+    if (skills) {
+      user.profile.skills = skills
+        .split(",")
+        .map(skill => skill.trim());
     }
+
+    if (resumeLink) {
+      user.profile.resume = resumeLink; // Google Drive link
+    }
+
+    await user.save();
+
+    console.log("Profile updated successfully",user.profile.resume);
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      user: {
+        _id: user._id,
+        fullname: user.fullname,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        role: user.role,
+        profile: user.profile,
+      },
+    });
+    
+  } 
+  catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
 };

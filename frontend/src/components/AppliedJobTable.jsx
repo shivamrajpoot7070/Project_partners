@@ -26,7 +26,6 @@ const AppliedJobTable = () => {
             </TableHeader>
 
             <TableBody>
-
                 {
                     allAppliedJobs.length<=0 ? <span>You have not applied for any Project Yet</span> : allAppliedJobs.map((item)=>(
                         <TableRow key={item?.id}>

@@ -23,7 +23,8 @@ const useGetAllCompanies = () => {
         if (res.data.success) {
           dispatch(setCompanies(res.data.companies));
         }
-      } catch (error) {
+      }
+       catch (error) {
         console.error(
           error.response?.data?.message || "Failed to fetch companies"
         );

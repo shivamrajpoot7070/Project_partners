@@ -12,7 +12,9 @@ import Navbar from "../shared/Navbar";
 import useGetCompanyById from "@/hooks/useGetCompanyById";
 
 const CompanySetup = () => {
+  
   const params = useParams();
+
   useGetCompanyById(params.id); // Fetch the company data by ID which you slected to edit
 
   const { singleCompany } = useSelector((store) => store.company);

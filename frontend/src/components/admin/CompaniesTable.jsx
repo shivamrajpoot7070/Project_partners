@@ -14,12 +14,11 @@ import { Edit2, MoreHorizontal } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import store from "@/redux/store";
-import useGetAllCompanies from "@/hooks/useGetAllCompanies";
+// import useGetCompanyById from "@/hooks/useGetCompanyById";
+// import useGetAllCompanies from "@/hooks/useGetAllCompanies";
 
 const CompaniesTable = () => {
 
-  useGetAllCompanies();
-  
   const { companies, searchCompanyByText } = useSelector((store) => store.company);
   const [filterCompany, setFilterCompany] = useState(companies);
   const navigate = useNavigate();

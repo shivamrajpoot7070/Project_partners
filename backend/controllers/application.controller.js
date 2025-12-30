@@ -23,12 +23,12 @@ export const applyJob = async (req, res) => {
 
         // check if the jobs exists
         const job = await Job.findById(jobId);
-        if (!job) {
-            return res.status(404).json({
-                message: "Job not found",
-                success: false
-            })
-        }
+        // if (!job) {
+        //     return res.status(404).json({
+        //         message: "Job not found",
+        //         success: false
+        //     })
+        // };
         // create a new application
         const newApplication = await Application.create({ // create new application
             job:jobId, 
@@ -74,6 +74,7 @@ export const getAppliedJobs = async (req,res) => {
 
 // admin dekhega kitna user ne apply kiya hai
 export const getApplicants = async (req,res) => {
+
     try {
         const jobId = req.params.id;
         const job = await Job.findById(jobId).populate({
@@ -83,12 +84,12 @@ export const getApplicants = async (req,res) => {
                 path:'applicant'
             }
         });
-        if(!job){
-            return res.status(404).json({
-                message:'Job not found.',
-                success:false
-            })
-        };
+        // if(!job){
+        //     return res.status(404).json({
+        //         message:'Job not found.',
+        //         success:false
+        //     })
+        // };
         return res.status(200).json({
             job, 
             succees:true
