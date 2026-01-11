@@ -7,14 +7,16 @@ const isAuthenticated = async (req, res, next) => {
         const headerToken = req.headers.authorization && req.headers.authorization.split(" ")[1];
         const token = cookieToken || headerToken;
 
+        console.log("Authentication Token:", token);
+
         if (!token) {
             return res.status(401).json({
                 message: "User not authenticated",
                 success: false,
             });
         }
+
         // Verify the token
-        
         const decode = await jwt.verify(token, process.env.SECRET_KEY);
         if (!decode) {
             return res.status(401).json({

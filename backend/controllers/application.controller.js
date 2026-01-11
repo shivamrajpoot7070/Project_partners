@@ -41,7 +41,8 @@ export const applyJob = async (req, res) => {
             message:"Job applied successfully.",
             success:true
         })
-    } catch (error) {
+    } 
+    catch (error) {
         console.log(error);
     }
 };

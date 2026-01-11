@@ -157,9 +157,15 @@ export const updateProfile = async (req, res) => {
 
     const { fullname, email, phoneNumber, bio, skills, resumeLink } = req.body;
 
+    console.log("Update Profile Called");
+
     const userId = req.id;
-; // from isAuthenticated middleware
-    let user = await User.findById(userId);
+
+    console.log("Update Profile Req Body:", req.body);
+    console.log("Authenticated User ID:", userId);
+
+
+   let user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({
