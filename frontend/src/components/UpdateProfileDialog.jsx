@@ -13,7 +13,11 @@ import { toast } from 'sonner'
 import { useEffect } from 'react'
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
-    //  const USER = "http://localhost:1000/api/v1/user";
+
+    const token = localStorage.getItem("token");
+
+    const USER = "http://localhost:1000/api/v1/user";
+    
     const [loading, setLoading] = useState(false);
     const { user } = useSelector((store) => store.auth);  // user already i have
 
@@ -53,7 +57,7 @@ useEffect(() => {
   setLoading(true);
 
   try {
-    const res = await axios.post(
+    const res = await axios.patch(
       `${USER_END_POINT}/profile/update`,
       {
         fullname: input.fullname,
@@ -61,10 +65,13 @@ useEffect(() => {
         phoneNumber: input.phoneNumber,
         bio: input.bio,
         skills: input.skills,
-        resumeLink: input.resumeLink, // Google Drive link
+        resumeLink: input.resumeLink,
       },
       {
-        withCredentials: true, // ✅ cookie-based auth
+        withCredentials: true, // ✅ cookie-based auth for verification whether the user is logged in or not
+        headers: {
+          Authorization: `Bearer ${token}`, // ✅ ADD THIS
+          },
       }
     );
 

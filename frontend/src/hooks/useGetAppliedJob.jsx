@@ -15,7 +15,7 @@ const useGetAppliedJobs = () => {
           headers: {
             Authorization: `Bearer ${token}`, // Include Bearer token
           },
-          withCredentials: true, // Include cookies
+          withCredentials: true,         // Include cookies
         });
 
         console.log("Fetched applied jobs:", res.data);
